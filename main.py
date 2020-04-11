@@ -12,7 +12,7 @@ async def _ideecmd(message):
     athr = message.author
     chnl = bot.get_channel(692766179101507636)
     n = message.content
-    await chnl.send('{} a eu une idée de commande : "{}"'.format(athr, cmd))
+    await chnl.send('{} a eu une idée de commande : "{}"'.%(athr, cmd))
     
 #bot.add_command(ideecmd)
 
