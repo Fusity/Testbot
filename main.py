@@ -34,12 +34,13 @@ async def on_message(message):
                 json.dump(users, f)
             return await message.channel.send("You are now in the list you can level up (write some message to lvl up)")
 
-        number = random.randint(1, 5)
-        await add_experience(users, message.author, number)
-        await add_money(users, message.author)
-        await level_up(users, message.author, message.channel)
-        with open("users.json", 'w') as f:
-            json.dump(users, f)
+        if time.time() - users[str(message.author.id)]["last_message"] > 5:
+            number = random.randint(1, 5)
+            await add_experience(users, message.author, number)
+            await add_money(users, message.author)
+            await level_up(users, message.author, message.channel)
+            with open("users.json", 'w') as f:
+                json.dump(users, f)
 
 async def user_insert(users, user):
     if not user.id in users:
@@ -50,7 +51,8 @@ async def user_insert(users, user):
         users[user.id]["money"] = 0
 
 async def add_experience(users, user, number):
-    users[str(user.id)]["experience"] += number
+    experience = floor(9.5 + number + (users[str(user.id)]['level'] - 2))
+    users[str(user.id)]["experience"] += experience
     users[str(user.id)]["last_message"] = time.time()
 
 async def add_money(users, user):
