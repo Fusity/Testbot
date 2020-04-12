@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-TOKEN = "NjkyMzQxMzQwNzIxMjUwMzY2.XpG1vg.kpA2gwBVhN8R7J8wQChDerPnWXA"
+TOKEN = "****************************************"
 bot = commands.Bot(command_prefix = "./")
 
 #@bot.command
