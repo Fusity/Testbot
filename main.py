@@ -34,7 +34,7 @@ async def on_message(message):
                 json.dump(users, f)
             return await message.channel.send("You are now in the list you can level up (write some message to lvl up)")
 
-        number = random.randint(5, 20)
+        number = random.randint(1, 5)
         await add_experience(users, message.author, number)
         await add_money(users, message.author)
         await level_up(users, message.author, message.channel)
@@ -60,7 +60,7 @@ async def add_money(users, user):
 async def level_up(users, user, channel):
     experience = users[str(user.id)]["experience"]
     current_level = users[str(user.id)]["level"]
-    next_level = int(experience ** (2 / 6))
+    next_level = int(experience ** (1 / 4))
 
     if current_level < next_level:
         await channel.send(f":tada: {user.mention}, tu as atteint le niveau {next_level} !")
