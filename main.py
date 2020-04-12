@@ -4,6 +4,7 @@ import time
 import discord
 from dotenv import load_dotenv
 import random
+from math import floor
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -35,7 +36,7 @@ async def on_message(message):
 
         number = random.randint(5, 20)
         await add_experience(users, message.author, number)
-        await add_money(users, message.author, number)
+        await add_money(users, message.author)
         await level_up(users, message.author, message.channel)
         with open("users.json", 'w') as f:
             json.dump(users, f)
@@ -52,8 +53,9 @@ async def add_experience(users, user, number):
     users[str(user.id)]["experience"] += number
     users[str(user.id)]["last_message"] = time.time()
 
-async def add_money(users, user, number):
-    users[str(user.id)]["money"] += number
+async def add_money(users, user):
+    money = floor((9.5 + users[str(user.id)]['level'] + 50.75 + (users[str(user.id)]['level'] - 2) / 4 * 2 * ((users[str(user.id)]['level']) % 4) + 1 + (users[str(user.id)]['level'] - 6) / 4 * 2) / 18)
+    users[str(user.id)]["money"] += money
 
 async def level_up(users, user, channel):
     experience = users[str(user.id)]["experience"]
