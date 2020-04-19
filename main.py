@@ -94,9 +94,9 @@ async def userinfo(ctx, member: discord.Member = None):
 
         embed = discord.Embed(color=member.color, timestamp=ctx.message.created_at)
         embed.set_author(name=f"{member}", icon_url=member.avatar_url)
-        embed.add_field(name="Niveau", value=users[str(member_id)]["level"])
-        embed.add_field(name="Money", value=users[str(member_id)]["money"])
-        embed.add_field(name="XP", value=users[str(member_id)]["experience"])
+        embed.add_field(name="Niveau", value=users[member_id]["level"])
+        embed.add_field(name="Money", value=users[member_id]["money"])
+        embed.add_field(name="XP", value=users[member_id]["experience"])
         await ctx.send(embed=embed)
 
 @bot.command(pass_context=True)
