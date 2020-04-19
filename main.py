@@ -12,7 +12,6 @@ PREFIX = os.getenv('COMMAND_PREFIX')
 
 bot = commands.Bot(command_prefix=PREFIX)
 
-@bot.event
 async def on_message(message):
     if message.author.bot:
         return
@@ -76,6 +75,11 @@ async def join(ctx):
 async def leave(ctx):
     voix_bot = ctx.guild.voice_client
     await voix_bot.disconnect()
+
+@bot.command(pass_context=True)
+async def tts(ctx):
+    finalMessage = ctx.message.content.replace('./tts', '')
+    await ctx.send(finalMessage, tts=True)
 
 @bot.command(pass_context=True)
 async def rank(ctx):
