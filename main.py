@@ -5,6 +5,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import random
 from math import floor
+import discord
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -75,8 +76,8 @@ async def join(ctx):
 
 @bot.command(pass_context=True)
 async def leave(ctx):
-    voix_bot = ctx.guild.voice_client
-    await voix_bot.disconnect()
+    voiceBot = ctx.guild.voice_client
+    await voiceBot.disconnect()
 
 @bot.command(pass_context=True)
 async def tts(ctx):
@@ -84,13 +85,25 @@ async def tts(ctx):
     await ctx.send(finalMessage, tts=True)
 
 @bot.command(pass_context=True)
-async def rank(ctx):
-    print("ok")
-    with open("users.json", "r") as user_info:
-        data = json.load(user_info)
+async def userinfo(ctx, member: discord.Member = None):
+    member = ctx.author if not member else member
+    member_id = str(member.id)
 
-        for x in data:
-            for p in sorted(data, key=lambda k: k, reverse=True):
-                print(p)
+    with open("users.json", "r") as f:
+        users = json.load(f)
+
+        embed = discord.Embed(color=member.color, timestamp=ctx.message.created_at)
+        embed.set_author(name=f"{member}", icon_url=member.avatar_url)
+        embed.add_field(name="Niveau", value=users[str(member_id)]["level"])
+        embed.add_field(name="Money", value=users[str(member_id)]["money"])
+        embed.add_field(name="XP", value=users[str(member_id)]["experience"])
+        await ctx.send(embed=embed)
+
+@bot.command(pass_context=True)
+async def rank(ctx):
+    with open('users.json', 'r') as fp:
+        users = json.load(fp)
+        lb = [(member, users[str(member.id)].get('experience', 0)) for member in ctx.message.guild.members if member.id in users]
+        print(lb.sort(key=lambda x: x[1], reverse=True))
 
 bot.run(TOKEN)
