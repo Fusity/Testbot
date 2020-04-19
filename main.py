@@ -103,7 +103,22 @@ async def userinfo(ctx, member: discord.Member = None):
 async def rank(ctx):
     with open('users.json', 'r') as fp:
         users = json.load(fp)
-        lb = [(member, users[str(member.id)].get('experience', 0)) for member in ctx.message.guild.members if member.id in users]
-        print(lb.sort(key=lambda x: x[1], reverse=True))
+        lb = []
+        z = 0
+        for member in ctx.message.guild.members:
+            if str(member.id) in users:
+                lb.append([users[str(member.id)].get('experience', 0), member.id])
+
+        for i in sorted(lb, reverse=True):
+            z += 1
+            if z == 4:
+                break
+
+            embed = discord.Embed(color=bot.get_user(i[1]).color, timestamp=ctx.message.created_at)
+            embed.set_author(name=f"{bot.get_user(i[1])}", icon_url=bot.get_user(i[1]).avatar_url)
+            embed.add_field(name="Niveau", value=users[str(i[1])]["level"])
+            embed.add_field(name="Money", value=users[str(i[1])]["money"])
+            embed.add_field(name="XP", value=users[str(i[1])]["experience"])
+            await ctx.send(embed=embed)
 
 bot.run(TOKEN)
