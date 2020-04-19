@@ -12,6 +12,7 @@ PREFIX = os.getenv('COMMAND_PREFIX')
 
 bot = commands.Bot(command_prefix=PREFIX)
 
+@bot.event
 async def on_message(message):
     if message.author.bot:
         return
@@ -22,14 +23,14 @@ async def on_message(message):
             await user_insert(users, message.author)
             with open("users.json", "w") as f:
                 json.dump(users, f)
-            return await message.channel.send("You are now in the list you can level up (write some message to lvl up)")
+            await message.channel.send("You are now in the list you can level up (write some message to lvl up)")
         try:
             print (users[str(message.author.id)])
         except:
             await user_insert(users, message.author)
             with open("users.json", "w") as f:
                 json.dump(users, f)
-            return await message.channel.send("You are now in the list you can level up (write some message to lvl up)")
+            await message.channel.send("You are now in the list you can level up (write some message to lvl up)")
 
         if time.time() - users[str(message.author.id)]["last_message"] > 5:
             number = random.randint(1, 5)
@@ -38,6 +39,7 @@ async def on_message(message):
             await level_up(users, message.author, message.channel)
             with open("users.json", 'w') as f:
                 json.dump(users, f)
+    await bot.process_commands(message)
 
 async def user_insert(users, user):
     if not user.id in users:
