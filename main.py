@@ -1,22 +1,20 @@
 import os
 import json
 import time
-import discord
+from discord.ext import commands
 from dotenv import load_dotenv
 import random
 from math import floor
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
+PREFIX = os.getenv('COMMAND_PREFIX')
 
-client = discord.Client()
+bot = commands.Bot(command_prefix=PREFIX)
 
-@client.event
+@bot.event
 async def on_message(message):
     if message.author.bot:
-        return
-
-    if message.author == client.user:
         return
 
     with open('users.json', 'r') as json_file:
@@ -68,4 +66,25 @@ async def level_up(users, user, channel):
         await channel.send(f":tada: {user.mention}, tu as atteint le niveau {next_level} !")
         users[str(user.id)]["level"] = next_level
 
-client.run(TOKEN)
+
+@bot.command(pass_context=True)
+async def join(ctx):
+    channel = ctx.message.author.voice.channel
+    await channel.connect(reconnect=True)
+
+@bot.command(pass_context=True)
+async def leave(ctx):
+    voix_bot = ctx.guild.voice_client
+    await voix_bot.disconnect()
+
+@bot.command(pass_context=True)
+async def rank(ctx):
+    print("ok")
+    with open("users.json", "r") as user_info:
+        data = json.load(user_info)
+
+        for x in data:
+            for p in sorted(data, key=lambda k: k, reverse=True):
+                print(p)
+
+bot.run(TOKEN)
