@@ -15,7 +15,7 @@ bot = commands.Bot(command_prefix=PREFIX)
 
 ##############################################################################################################
 #Ne pas oublier de mettre les extension ici \/\/
-exetensions = ['infos', 'FBGames']
+extensions = ['infos', 'FBGames']
 
 @bot.event
 async def on_message(message):
@@ -95,11 +95,11 @@ async def unload(extension):
         await chnl.send('{} cannot be unloaded. [{}]'.format(extension, error))
 
 
+
 if __name__ == '__main__':
-    for exetension in extensions:
+    for extension in extensions:
         try:
             bot.load_extension(extension)
-        except Exenption as error:
-            chnl = bot.get_channel(702017626011861012)
-            await chnl.send('{} cannot be loaded. [{}]'.format(extension, error))     
+        except Exception as error:
+            print('{} cannot be loaded [{}]'.format(extension, error))
     bot.run(TOKEN)
