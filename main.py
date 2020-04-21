@@ -13,6 +13,9 @@ PREFIX = os.getenv('COMMAND_PREFIX')
 
 bot = commands.Bot(command_prefix=PREFIX)
 
+
+exetensions = []
+
 @bot.event
 async def on_message(message):
     if message.author.bot:
@@ -68,4 +71,34 @@ async def level_up(users, user, channel):
         await channel.send(f":tada: {user.mention}, tu as atteint le niveau {next_level} !")
         users[str(user.id)]["level"] = next_level
 
-bot.run(TOKEN)
+        
+        
+@bot.command()
+async def load(extension):
+    try:
+        chnl = bot.get_channel(702017626011861012)
+        bot.load_extension(extension)
+        await chnl.send('Loaded {}'.format(extension))
+    except Exeception as error:
+        chnl = bot.get_channel(702017626011861012)
+        await chnl.send('{} cannot be loaded. [{}]'.format(extension, error))
+
+@bot.command()
+async def unload(extension):
+    try:
+        chnl = bot.get_channel(702017626011861012)
+        bot.unload_extension(extension)
+        await chnl.send('Unloaded {}'.format(extension))
+    except Exeception as error:
+        chnl = bot.get_channel(702017626011861012)
+        await chnl.send('{} cannot be unloaded. [{}]'.format(extension, error))
+
+
+if __name__ == '__main__':
+    for exetension in extensions:
+        try:
+            bot.load_extension(extension)
+        except Exenption as error:
+            chnl = bot.get_channel(702017626011861012)
+            await chnl.send('{} cannot be loaded. [{}]'.format(extension, error))     
+    bot.run(TOKEN)
