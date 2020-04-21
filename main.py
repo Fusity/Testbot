@@ -13,8 +13,9 @@ PREFIX = os.getenv('COMMAND_PREFIX')
 
 bot = commands.Bot(command_prefix=PREFIX)
 
-
-exetensions = []
+##############################################################################################################
+#Ne pas oublier de mettre les extension ici \/\/
+exetensions = ['infos', 'FBGames']
 
 @bot.event
 async def on_message(message):
