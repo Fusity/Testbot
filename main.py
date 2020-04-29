@@ -15,7 +15,7 @@ bot = commands.Bot(command_prefix=PREFIX)
 
 ##############################################################################################################
 #Ne pas oublier de mettre les extension ici \/\/
-extensions = ['infos', 'FBGames']
+extensions = ['FBGames', 'infos']
 
 @bot.event
 async def on_message(message):
@@ -73,14 +73,13 @@ async def level_up(users, user, channel):
         users[str(user.id)]["level"] = next_level
 
         
-        
 @bot.command()
 async def load(extension):
     try:
         chnl = bot.get_channel(702017626011861012)
         bot.load_extension(extension)
         await chnl.send('Loaded {}'.format(extension))
-    except Exeception as error:
+    except Exception as error:
         chnl = bot.get_channel(702017626011861012)
         await chnl.send('{} cannot be loaded. [{}]'.format(extension, error))
 
@@ -90,7 +89,7 @@ async def unload(extension):
         chnl = bot.get_channel(702017626011861012)
         bot.unload_extension(extension)
         await chnl.send('Unloaded {}'.format(extension))
-    except Exeception as error:
+    except Exception as error:
         chnl = bot.get_channel(702017626011861012)
         await chnl.send('{} cannot be unloaded. [{}]'.format(extension, error))
 
