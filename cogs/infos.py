@@ -1,5 +1,11 @@
-import discord
+import os
+import json
+import time
 from discord.ext import commands
+from dotenv import load_dotenv
+import random
+from math import floor
+import discord
 
 class infos(commands.Cog):
     def __init__(self, bot):
