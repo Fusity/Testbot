@@ -15,7 +15,7 @@ bot = commands.Bot(command_prefix=PREFIX)
 
 ##############################################################################################################
 #Ne pas oublier de mettre les extension ici \/\/
-extensions = ['FBGames', 'infos']
+extensions = ['cogs.FBGames', 'cogs2.infos']
 
 @bot.event
 async def on_message(message):
